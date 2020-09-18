@@ -7,8 +7,10 @@ const ProductOverview = (props) => {
     const availableProducts = useSelector(
         (state) => state.product.availableProducts
     );
-    console.log(availableProducts);
-    return <ProductList data={availableProducts} />;
+
+    return (
+        <ProductList data={availableProducts} navigation={props.navigation} />
+    );
 };
 
 ProductOverview.navigationOptions = (navData) => {

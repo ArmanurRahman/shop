@@ -1,29 +1,62 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Button } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    Button,
+    TouchableOpacity,
+    TouchableNativeFeedback,
+    Platform,
+} from "react-native";
 import { Color } from "../constants/Color";
+import MainButton from "./MainButton";
 
 const ProductList = (props) => {
+    let TouchableComponent = TouchableOpacity;
+
+    if (Platform.OS == "android" && Platform.Version > 22) {
+        TouchableComponent = TouchableNativeFeedback;
+    }
+
     return (
         <View style={styles.screen}>
             <View style={styles.container}>
-                <View style={styles.imageContainer}>
-                    <Image
-                        source={{ uri: props.imageUrl }}
-                        style={styles.image}
-                    />
-                </View>
-                <View style={styles.detailContainer}>
+                <TouchableComponent
+                    onPress={() => props.onSelectItem(props.id, props.title)}
+                    useForeground
+                >
                     <View>
-                        <Text style={styles.title}>{props.title}</Text>
+                        <View style={styles.imageContainer}>
+                            <Image
+                                source={{ uri: props.imageUrl }}
+                                style={styles.image}
+                            />
+                        </View>
+                        <View style={styles.detailContainer}>
+                            <View>
+                                <Text style={styles.title}>{props.title}</Text>
+                            </View>
+                            <View>
+                                <Text style={styles.price}>{props.price}</Text>
+                            </View>
+                            <View style={styles.buttonContainer}>
+                                <MainButton
+                                    onPress={() =>
+                                        props.onSelectItem(
+                                            props.id,
+                                            props.title
+                                        )
+                                    }
+                                >
+                                    VIEW DETAIL
+                                </MainButton>
+
+                                <MainButton>TO CART</MainButton>
+                            </View>
+                        </View>
                     </View>
-                    <View>
-                        <Text style={styles.price}>{props.price}</Text>
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <Button title='VIEW DETAIL' color={Color.primary} />
-                        <Button title='TO CART' color={Color.primary} />
-                    </View>
-                </View>
+                </TouchableComponent>
             </View>
         </View>
     );

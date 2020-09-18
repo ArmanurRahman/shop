@@ -3,6 +3,7 @@ import ProductOverview from "../screens/shop/ProductOverview";
 import { createAppContainer } from "react-navigation";
 import { Platform } from "react-native";
 import { Color } from "../constants/Color";
+import ProductDetails from "../screens/shop/ProductDetail";
 
 const defaultNavigationHeader = {
     headerStyle: {
@@ -13,6 +14,7 @@ const defaultNavigationHeader = {
 const ShopNavigation = createStackNavigator(
     {
         productOverview: ProductOverview,
+        productDetail: ProductDetails,
     },
     { defaultNavigationOptions: defaultNavigationHeader }
 );
