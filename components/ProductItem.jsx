@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import { Color } from "../constants/Color";
 import MainButton from "./MainButton";
+import { useDispatch } from "react-redux";
+import * as cartActions from "../store/action/cart";
 
 const ProductList = (props) => {
     let TouchableComponent = TouchableOpacity;
@@ -19,40 +21,51 @@ const ProductList = (props) => {
         TouchableComponent = TouchableNativeFeedback;
     }
 
+    const dispatch = useDispatch();
+    const addToCartHandler = () => {
+        dispatch(cartActions.addToCart(props.item, 1));
+    };
+
     return (
         <View style={styles.screen}>
             <View style={styles.container}>
                 <TouchableComponent
-                    onPress={() => props.onSelectItem(props.id, props.title)}
+                    onPress={() =>
+                        props.onSelectItem(props.item.id, props.item.title)
+                    }
                     useForeground
                 >
                     <View>
                         <View style={styles.imageContainer}>
                             <Image
-                                source={{ uri: props.imageUrl }}
+                                source={{ uri: props.item.imageUrl }}
                                 style={styles.image}
                             />
                         </View>
                         <View style={styles.detailContainer}>
                             <View>
-                                <Text style={styles.title}>{props.title}</Text>
+                                <Text style={styles.title}>
+                                    {props.item.title}
+                                </Text>
                             </View>
                             <View>
-                                <Text style={styles.price}>{props.price}</Text>
+                                <Text style={styles.price}>
+                                    {props.item.price}
+                                </Text>
                             </View>
                             <View style={styles.buttonContainer}>
                                 <MainButton
                                     onPress={() =>
                                         props.onSelectItem(
-                                            props.id,
-                                            props.title
+                                            props.item.id,
+                                            props.item.title
                                         )
                                     }
                                 >
                                     VIEW DETAIL
                                 </MainButton>
 
-                                <MainButton onPress={props.addToCart}>
+                                <MainButton onPress={addToCartHandler}>
                                     TO CART
                                 </MainButton>
                             </View>

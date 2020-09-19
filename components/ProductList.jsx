@@ -2,15 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import ProductItem from "./ProductItem";
 import { useDispatch } from "react-redux";
-import * as cartActions from "../store/action/cart";
 
 const ProductList = (props) => {
-    const dispatch = useDispatch();
-    const addToCartHandler = () => {
-        dispatch(cartActions.addToCart(props.data, 1));
-        console.log("in");
-    };
-
     const selectItemHander = (id, title) => {
         props.navigation.navigate({
             routeName: "productDetail",
@@ -23,14 +16,7 @@ const ProductList = (props) => {
 
     const renderItem = (itemData) => {
         return (
-            <ProductItem
-                id={itemData.item.id}
-                imageUrl={itemData.item.imageUrl}
-                title={itemData.item.title}
-                price={itemData.item.price}
-                onSelectItem={selectItemHander}
-                addToCart={addToCartHandler}
-            />
+            <ProductItem onSelectItem={selectItemHander} item={itemData.item} />
         );
     };
 

@@ -20,7 +20,13 @@ ProductOverview.navigationOptions = (navData) => {
         headerTitle: "Products",
         headerRight: () => (
             <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-                <Item title='cart' iconName='ios-cart' onPress={() => {}} />
+                <Item
+                    title='cart'
+                    iconName='ios-cart'
+                    onPress={() => {
+                        navData.navigation.navigate("cartScreen");
+                    }}
+                />
             </HeaderButtons>
         ),
     };
