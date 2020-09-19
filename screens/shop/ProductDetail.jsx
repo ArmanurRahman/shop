@@ -14,13 +14,30 @@ import MainButton from "../../components/MainButton";
 
 const ProductDetails = (props) => {
     const [quantity, setQuantity] = useState(1);
+
     const selectProductId = props.navigation.getParam("productId");
     const availableProduct = useSelector(
         (state) => state.product.availableProducts
     );
+
     const selectedProduct = availableProduct.find(
         (product) => product.id === selectProductId
     );
+
+    const [totalPrice, setTotalPrice] = useState(selectedProduct.price);
+    const addQuantity = () => {
+        console.log("in");
+        setQuantity((prevState) => prevState + 1);
+        setTotalPrice(selectedProduct.price * (quantity + 1));
+    };
+
+    const removeQuantity = () => {
+        if (quantity !== 1) {
+            setQuantity((prevState) => prevState - 1);
+            setTotalPrice(selectedProduct.price * (quantity - 1));
+        }
+    };
+
     console.log(selectedProduct);
     return (
         <ScrollView>
@@ -60,7 +77,7 @@ const ProductDetails = (props) => {
                     </Text>
                     <View style={styles.quantityTotal}>
                         <View style={styles.quantity}>
-                            <MainButton>
+                            <MainButton onPress={removeQuantity}>
                                 <Ionicons
                                     name='md-remove'
                                     size={24}
@@ -73,7 +90,7 @@ const ProductDetails = (props) => {
                                 </Text>
                             </View>
 
-                            <MainButton>
+                            <MainButton onPress={addQuantity}>
                                 <Ionicons
                                     name='md-add'
                                     size={24}
@@ -82,7 +99,9 @@ const ProductDetails = (props) => {
                             </MainButton>
                         </View>
                         <View styles={styles.total}>
-                            <Text>Total</Text>
+                            <Text style={{ fontSize: 18 }}>
+                                Total ${totalPrice}
+                            </Text>
                         </View>
                     </View>
                     <View style={styles.buttonContainer}>
