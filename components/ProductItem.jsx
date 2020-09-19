@@ -52,7 +52,9 @@ const ProductList = (props) => {
                                     VIEW DETAIL
                                 </MainButton>
 
-                                <MainButton>TO CART</MainButton>
+                                <MainButton onPress={props.addToCart}>
+                                    TO CART
+                                </MainButton>
                             </View>
                         </View>
                     </View>

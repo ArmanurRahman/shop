@@ -26,7 +26,6 @@ const ProductDetails = (props) => {
 
     const [totalPrice, setTotalPrice] = useState(selectedProduct.price);
     const addQuantity = () => {
-        console.log("in");
         setQuantity((prevState) => prevState + 1);
         setTotalPrice(selectedProduct.price * (quantity + 1));
     };
