@@ -55,10 +55,11 @@ const reducer = (state = init, action) => {
             );
             let cloneCart = [...state.cartItems];
             const removed = cloneCart.splice(productIndex, 1);
+
             return {
                 ...state,
                 cartItems: cloneCart,
-                totalSum: total - removed[0].totalPrice,
+                totalSum: (state.totalSum - removed[0].totalPrice).toFixed(2),
             };
         default:
             return state;

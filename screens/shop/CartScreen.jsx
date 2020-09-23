@@ -5,6 +5,7 @@ import CartItems from "../../components/shop/CartItems";
 
 const CartScreen = (props) => {
     const cart = useSelector((state) => state.cart.cartItems);
+    const totalSum = useSelector((state) => state.cart.totalSum);
     console.log(cart);
     return (
         <View style={styles.screen}>
@@ -13,6 +14,9 @@ const CartScreen = (props) => {
             </View>
             <View style={styles.line}></View>
             <CartItems data={cart} />
+            <View>
+                <Text style={styles.total}>Total ${totalSum}</Text>
+            </View>
         </View>
     );
 };
@@ -31,6 +35,10 @@ const styles = StyleSheet.create({
         height: 3,
         backgroundColor: "black",
         marginVertical: 10,
+    },
+    total: {
+        textAlign: "right",
+        fontSize: 20,
     },
 });
 export default CartScreen;
