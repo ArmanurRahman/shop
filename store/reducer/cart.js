@@ -1,4 +1,9 @@
-import { ADD_TO_CART, ADD_QUANTITY, DEDUCT_QUANTITY } from "../action/cart";
+import {
+    ADD_TO_CART,
+    ADD_QUANTITY,
+    DEDUCT_QUANTITY,
+    REMOVE_FROM_CART,
+} from "../action/cart";
 import Cart from "../../models/cart";
 
 const init = {
@@ -43,26 +48,17 @@ const reducer = (state = init, action) => {
                 cartItems: newCartItems,
                 totalSum: total,
             };
-        case ADD_QUANTITY:
+
+        case REMOVE_FROM_CART:
             const productIndex = state.cartItems.findIndex(
                 (item) => item.productId === action.productId
             );
-            if (productIndex !== 0) {
-                let cloneCart = [...state.cartItems];
-                cloneCart[index] = new Cart(
-                    cloneCart[index].productId,
-                    cloneCart[index].title,
-                    cloneCart[index].imageUrl,
-                    cloneCart[index].quantity + 1,
-                    cloneCart[index].totalPrice + action.price
-                );
-                newCartItems = cloneCart;
-                total += action.price;
-            }
+            let cloneCart = [...state.cartItems];
+            const removed = cloneCart.splice(productIndex, 1);
             return {
                 ...state,
-                cartItems: newCartItems,
-                totalSum: total,
+                cartItems: cloneCart,
+                totalSum: total - removed[0].totalPrice,
             };
         default:
             return state;

@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import QuantityControl from "../QuantityControl/QuantityControl";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
+import * as cartAction from "../../store/action/cart";
 
 const CartItem = (props) => {
     const [quantity, setQuantity] = useState();
     const quantityHandler = (qty) => {
         setQuantity(qty);
+    };
+
+    const dispatch = useDispatch();
+    const removeCart = () => {
+        dispatch(cartAction.removeFromCart(props.id));
     };
 
     const cartInfo = useSelector((state) => {
@@ -27,8 +34,16 @@ const CartItem = (props) => {
                     />
                 </View>
                 <View style={styles.detailContainer}>
-                    <View>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                        }}
+                    >
                         <Text style={styles.title}>{props.title}</Text>
+                        <TouchableOpacity onPress={removeCart}>
+                            <Ionicons name='md-trash' size={24} color='red' />
+                        </TouchableOpacity>
                     </View>
                     <QuantityControl
                         selectProductId={props.id}
@@ -64,9 +79,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
     },
-    price: {
-        fontSize: 18,
-    },
+
     line: {
         width: "100%",
         height: 2,
