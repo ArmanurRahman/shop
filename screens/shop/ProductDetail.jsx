@@ -1,21 +1,16 @@
-import React, { useState } from "react";
-import {
-    View,
-    StyleSheet,
-    Text,
-    ScrollView,
-    Image,
-    Button,
-} from "react-native";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Text, ScrollView, Image } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 import { Color } from "../../constants/Color";
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../../components/MainButton";
+import QuantityControl from "../../components/QuantityControl/QuantityControl";
+import * as cartActions from "../../store/action/cart";
 
 const ProductDetails = (props) => {
-    const [quantity, setQuantity] = useState(1);
-
     const selectProductId = props.navigation.getParam("productId");
+    const [quantity, setQuantity] = useState();
+
     const availableProduct = useSelector(
         (state) => state.product.availableProducts
     );
@@ -24,19 +19,25 @@ const ProductDetails = (props) => {
         (product) => product.id === selectProductId
     );
 
-    const [totalPrice, setTotalPrice] = useState(selectedProduct.price);
-    const addQuantity = () => {
-        setQuantity((prevState) => prevState + 1);
-        setTotalPrice(selectedProduct.price * (quantity + 1));
+    const dispatch = useDispatch();
+
+    const quantityHandler = (qty) => {
+        setQuantity(qty);
     };
 
-    const removeQuantity = () => {
-        if (quantity !== 1) {
-            setQuantity((prevState) => prevState - 1);
-            setTotalPrice(selectedProduct.price * (quantity - 1));
-        }
-    };
+    const cartInfo = useSelector((state) => {
+        return state.cart.cartItems.find(
+            (item) => item.productId === selectProductId
+        );
+    });
 
+    useEffect(() => {
+        setQuantity(cartInfo ? cartInfo.quantity : 1);
+    }, []);
+
+    const addToCartHandler = () => {
+        dispatch(cartActions.addToCart(selectedProduct, quantity));
+    };
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -73,37 +74,15 @@ const ProductDetails = (props) => {
                         {" "}
                         {selectedProduct.description}
                     </Text>
-                    <View style={styles.quantityTotal}>
-                        <View style={styles.quantity}>
-                            <MainButton onPress={removeQuantity}>
-                                <Ionicons
-                                    name='md-remove'
-                                    size={24}
-                                    color='white'
-                                />
-                            </MainButton>
-                            <View>
-                                <Text style={{ fontSize: 18 }}>
-                                    {String(quantity).padStart(2, "0")}
-                                </Text>
-                            </View>
 
-                            <MainButton onPress={addQuantity}>
-                                <Ionicons
-                                    name='md-add'
-                                    size={24}
-                                    color='white'
-                                />
-                            </MainButton>
-                        </View>
-                        <View styles={styles.total}>
-                            <Text style={{ fontSize: 18 }}>
-                                Total ${totalPrice}
-                            </Text>
-                        </View>
-                    </View>
+                    <QuantityControl
+                        selectProductId={selectProductId}
+                        unitPrice={selectedProduct.price}
+                        onSetQuantity={quantityHandler}
+                    />
+
                     <View style={styles.buttonContainer}>
-                        <MainButton>
+                        <MainButton onPress={addToCartHandler}>
                             <Ionicons
                                 name='ios-basket'
                                 size={24}
@@ -169,21 +148,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
     },
-    quantity: {
-        flexDirection: "row",
-        alignItems: "center",
-        width: "40%",
-        justifyContent: "space-between",
-    },
-    total: {
-        width: "40%",
-    },
-    quantityTotal: {
-        marginTop: 16,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-    },
+
     buttonContainer: {
         marginTop: 16,
         width: "70%",
