@@ -18,6 +18,17 @@ const ProductOverview = (props) => {
 ProductOverview.navigationOptions = (navData) => {
     return {
         headerTitle: "Products",
+        headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+                <Item
+                    title='menu'
+                    iconName='ios-menu'
+                    onPress={() => {
+                        navData.navigation.toggleDrawer();
+                    }}
+                />
+            </HeaderButtons>
+        ),
         headerRight: () => (
             <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
                 <Item
