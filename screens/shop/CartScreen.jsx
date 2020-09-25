@@ -1,12 +1,18 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CartItems from "../../components/shop/CartItems";
+import MainButton from "../../components/MainButton";
+import * as orderActions from "../../store/action/order";
 
 const CartScreen = (props) => {
     const cart = useSelector((state) => state.cart.cartItems);
     const totalSum = useSelector((state) => state.cart.totalSum);
-    console.log(cart);
+
+    const dispatch = useDispatch();
+    const checkOutHandler = () => {
+        dispatch(orderActions.placeOrder(cart));
+    };
     return (
         <View style={styles.screen}>
             <View>
@@ -16,6 +22,9 @@ const CartScreen = (props) => {
             <CartItems data={cart} />
             <View>
                 <Text style={styles.total}>Total ${totalSum}</Text>
+            </View>
+            <View style={{ marginTop: 10 }}>
+                <MainButton onPress={checkOutHandler}>Add To Cart</MainButton>
             </View>
         </View>
     );

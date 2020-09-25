@@ -1,5 +1,14 @@
 class Cart {
-    constructor(productId, title, imageUrl, quantity, totalPrice, price) {
+    constructor(
+        userId,
+        productId,
+        title,
+        imageUrl,
+        quantity,
+        totalPrice,
+        price
+    ) {
+        this.userId = userId;
         this.productId = productId;
         this.title = title;
         this.imageUrl = imageUrl;

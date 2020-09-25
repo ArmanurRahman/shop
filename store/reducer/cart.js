@@ -4,6 +4,7 @@ import {
     DEDUCT_QUANTITY,
     REMOVE_FROM_CART,
 } from "../action/cart";
+import { PLACE_ORDER } from "../action/order";
 import Cart from "../../models/cart";
 
 const init = {
@@ -21,6 +22,7 @@ const reducer = (state = init, action) => {
             let total = state.totalSum;
             if (index === -1) {
                 const newCart = new Cart(
+                    "u1",
                     action.product.id,
                     action.product.title,
                     action.product.imageUrl,
@@ -33,6 +35,7 @@ const reducer = (state = init, action) => {
             } else {
                 let cloneCart = [...state.cartItems];
                 cloneCart[index] = new Cart(
+                    cloneCart[index].userId,
                     action.product.id,
                     action.product.title,
                     action.product.imageUrl,
@@ -60,6 +63,12 @@ const reducer = (state = init, action) => {
                 ...state,
                 cartItems: cloneCart,
                 totalSum: (state.totalSum - removed[0].totalPrice).toFixed(2),
+            };
+        case PLACE_ORDER:
+            return {
+                ...state,
+                cartItems: [],
+                totalSum: 0,
             };
         default:
             return state;

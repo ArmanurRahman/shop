@@ -5,11 +5,13 @@ import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
 import ProductReducer from "./store/reducer/product";
 import CartReducer from "./store/reducer/cart";
+import OrderReducer from "./store/reducer/order";
 
 export default function App() {
     const rootReducer = combineReducers({
         product: ProductReducer,
         cart: CartReducer,
+        order: OrderReducer,
     });
 
     const store = createStore(rootReducer);
