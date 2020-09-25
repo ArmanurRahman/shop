@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import CartItems from "../../components/shop/CartItems";
 import MainButton from "../../components/MainButton";
 import * as orderActions from "../../store/action/order";
+import { currentDateTime } from "../../helper/utility";
 
 const CartScreen = (props) => {
     const cart = useSelector((state) => state.cart.cartItems);
@@ -11,7 +12,12 @@ const CartScreen = (props) => {
 
     const dispatch = useDispatch();
     const checkOutHandler = () => {
-        dispatch(orderActions.placeOrder(cart));
+        const updatedCart = [];
+        cart.forEach((item) => {
+            updatedCart.push({ ...item, orderDate: currentDateTime() });
+        });
+
+        dispatch(orderActions.placeOrder(updatedCart));
     };
     return (
         <View style={styles.screen}>
