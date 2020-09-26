@@ -6,6 +6,7 @@ import {
 } from "../action/cart";
 import { PLACE_ORDER } from "../action/order";
 import Cart from "../../models/cart";
+import { DELETE_PRODUCT } from "../action/product";
 
 const init = {
     cartItems: [],
@@ -69,6 +70,23 @@ const reducer = (state = init, action) => {
                 ...state,
                 cartItems: [],
                 totalSum: 0,
+            };
+        case DELETE_PRODUCT:
+            const cartProductIndex = state.cartItems.findIndex(
+                (item) => item.productId === action.pid
+            );
+            if (cartProductIndex === -1) {
+                return state;
+            }
+            let cloneCartItem = [...state.cartItems];
+            const removedItem = cloneCartItem.splice(cartProductIndex, 1);
+
+            return {
+                ...state,
+                cartItems: cloneCartItem,
+                totalSum: (state.totalSum - removedItem[0].totalPrice).toFixed(
+                    2
+                ),
             };
         default:
             return state;

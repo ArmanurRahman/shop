@@ -3,12 +3,12 @@ import { View, Text, StyleSheet, FlatList } from "react-native";
 import ProductItem from "./ProductItem";
 import { useDispatch } from "react-redux";
 import MainButton from "./MainButton";
-import * as cartActions from "../store/action/cart";
+import * as productActions from "../store/action/product";
 
-const ProductList = (props) => {
+const UserProductList = (props) => {
     const dispatch = useDispatch();
-    const addToCartHandler = (item) => {
-        dispatch(cartActions.addToCart(item, 1));
+    const deleteHandler = (id) => {
+        dispatch(productActions.deleteProduct(id));
     };
 
     const selectItemHander = (id, title) => {
@@ -24,16 +24,14 @@ const ProductList = (props) => {
     const renderItem = (itemData) => {
         return (
             <ProductItem onSelectItem={selectItemHander} item={itemData.item}>
-                <MainButton
-                    onPress={() =>
-                        selectItemHander(itemData.item.id, itemData.item.title)
-                    }
-                >
-                    VIEW DETAIL
-                </MainButton>
+                <MainButton onPress={() => {}}>EDIT</MainButton>
 
-                <MainButton onPress={() => addToCartHandler(itemData.item)}>
-                    TO CART
+                <MainButton
+                    onPress={() => {
+                        deleteHandler(itemData.item.id);
+                    }}
+                >
+                    DELETE
                 </MainButton>
             </ProductItem>
         );
@@ -49,4 +47,4 @@ const ProductList = (props) => {
 };
 
 const styles = StyleSheet.create({});
-export default ProductList;
+export default UserProductList;

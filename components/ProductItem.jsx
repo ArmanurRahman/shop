@@ -9,10 +9,6 @@ import {
     TouchableNativeFeedback,
     Platform,
 } from "react-native";
-import { Color } from "../constants/Color";
-import MainButton from "./MainButton";
-import { useDispatch } from "react-redux";
-import * as cartActions from "../store/action/cart";
 
 const ProductList = (props) => {
     let TouchableComponent = TouchableOpacity;
@@ -20,11 +16,6 @@ const ProductList = (props) => {
     if (Platform.OS == "android" && Platform.Version > 22) {
         TouchableComponent = TouchableNativeFeedback;
     }
-
-    const dispatch = useDispatch();
-    const addToCartHandler = () => {
-        dispatch(cartActions.addToCart(props.item, 1));
-    };
 
     return (
         <View style={styles.screen}>
@@ -54,20 +45,7 @@ const ProductList = (props) => {
                                 </Text>
                             </View>
                             <View style={styles.buttonContainer}>
-                                <MainButton
-                                    onPress={() =>
-                                        props.onSelectItem(
-                                            props.item.id,
-                                            props.item.title
-                                        )
-                                    }
-                                >
-                                    VIEW DETAIL
-                                </MainButton>
-
-                                <MainButton onPress={addToCartHandler}>
-                                    TO CART
-                                </MainButton>
+                                {props.children}
                             </View>
                         </View>
                     </View>
