@@ -15,7 +15,7 @@ const UserProductScreen = (props) => {
 
 UserProductScreen.navigationOptions = (navData) => {
     return {
-        headerTitle: "Products",
+        headerTitle: "User Products",
         headerLeft: () => (
             <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
                 <Item
@@ -30,10 +30,10 @@ UserProductScreen.navigationOptions = (navData) => {
         headerRight: () => (
             <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
                 <Item
-                    title='cart'
-                    iconName='ios-cart'
+                    title='create'
+                    iconName='ios-create'
                     onPress={() => {
-                        navData.navigation.navigate("cartScreen");
+                        navData.navigation.navigate("userEdit");
                     }}
                 />
             </HeaderButtons>
