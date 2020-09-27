@@ -15,7 +15,7 @@ const reducer = (state = init, action) => {
     switch (action.type) {
         case CREATE_PRODUCT:
             const newProduct = new Product(
-                new Date().toString(),
+                action.id,
                 "u1",
                 action.title,
                 action.imageUrl,

@@ -10,12 +10,33 @@ export const deleteProduct = (pid) => {
 };
 
 export const createProduct = (title, imageUrl, price, description) => {
-    return {
-        type: CREATE_PRODUCT,
-        title,
-        imageUrl,
-        price,
-        description,
+    return async (dispatch) => {
+        const response = await fetch(
+            "https://simple-shop-9bc6f.firebaseio.com/products.json",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    title,
+                    imageUrl,
+                    price,
+                    description,
+                }),
+            }
+        );
+
+        const resData = await response.json();
+        console.log(resData);
+        dispatch({
+            type: CREATE_PRODUCT,
+            id: resData.name,
+            title,
+            imageUrl,
+            price,
+            description,
+        });
     };
 };
 

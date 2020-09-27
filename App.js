@@ -1,11 +1,12 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import ShopNavigation from "./navigation/ShopNavigation";
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import ProductReducer from "./store/reducer/product";
 import CartReducer from "./store/reducer/cart";
 import OrderReducer from "./store/reducer/order";
+import thunk from "redux-thunk";
 
 export default function App() {
     const rootReducer = combineReducers({
@@ -14,7 +15,7 @@ export default function App() {
         order: OrderReducer,
     });
 
-    const store = createStore(rootReducer);
+    const store = createStore(rootReducer, applyMiddleware(thunk));
     return (
         <Provider store={store}>
             <ShopNavigation />
