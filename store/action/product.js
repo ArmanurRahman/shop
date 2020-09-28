@@ -13,26 +13,34 @@ export const deleteProduct = (pid) => {
 
 export const fetchProducts = () => {
     return async (dispatch) => {
-        const response = await fetch(
-            "https://simple-shop-9bc6f.firebaseio.com/products.json"
-        );
-        const resData = await response.json();
-        console.log(resData);
-        const productData = [];
-        for (let key in resData) {
-            productData.push(
-                new Product(
-                    key,
-                    "u1",
-                    resData[key].title,
-                    resData[key].imageUrl,
-                    resData[key].description,
-                    resData[key].price
-                )
+        try {
+            const response = await fetch(
+                "https://simple-shop-9bc6f.firebaseio.com/products.json"
             );
+
+            if (!response.ok) {
+                throw new Error("Something went wrong");
+            }
+            const resData = await response.json();
+
+            const productData = [];
+            for (let key in resData) {
+                productData.push(
+                    new Product(
+                        key,
+                        "u1",
+                        resData[key].title,
+                        resData[key].imageUrl,
+                        resData[key].description,
+                        resData[key].price
+                    )
+                );
+            }
+
+            dispatch({ type: SET_PRODUCT, products: productData });
+        } catch (err) {
+            throw err;
         }
-        console.log(productData);
-        dispatch({ type: SET_PRODUCT, products: productData });
     };
 };
 
