@@ -138,7 +138,7 @@ const EditProductScreen = (props) => {
                     {!editProduct && (
                         <Input
                             id='price'
-                            label='Proce'
+                            label='Price'
                             errorText='Please enter valid price'
                             keyboardType='decimal-pad'
                             returnKeyType='next'

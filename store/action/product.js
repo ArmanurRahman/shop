@@ -5,9 +5,17 @@ export const SET_PRODUCT = "SET_PRODUCT";
 import Product from "../../models/product";
 
 export const deleteProduct = (pid) => {
-    return {
-        type: DELETE_PRODUCT,
-        pid,
+    return async (dispatch) => {
+        await fetch(
+            `https://simple-shop-9bc6f.firebaseio.com/products/${pid}.json`,
+            {
+                method: "DELETE",
+            }
+        );
+        dispatch({
+            type: DELETE_PRODUCT,
+            pid,
+        });
     };
 };
 
@@ -76,11 +84,27 @@ export const createProduct = (title, imageUrl, price, description) => {
 };
 
 export const updateProduct = (productId, title, imageUrl, description) => {
-    return {
-        type: UPDATE_PRODUCT,
-        productId,
-        title,
-        imageUrl,
-        description,
+    return async (dispatch) => {
+        await fetch(
+            `https://simple-shop-9bc6f.firebaseio.com/products/${productId}.json`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    title,
+                    imageUrl,
+                    description,
+                }),
+            }
+        );
+        dispatch({
+            type: UPDATE_PRODUCT,
+            productId,
+            title,
+            imageUrl,
+            description,
+        });
     };
 };

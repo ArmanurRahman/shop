@@ -26,6 +26,10 @@ const ProductOverview = (props) => {
     }, [dispatch, setIsLoading, setError]);
 
     useEffect(() => {
+        props.navigation.addListener("willFocus", loadProduct);
+    }, [loadProduct]);
+
+    useEffect(() => {
         loadProduct();
     }, [loadProduct]);
 
