@@ -30,7 +30,7 @@ const CartScreen = (props) => {
                 <Text style={styles.total}>Total ${totalSum}</Text>
             </View>
             <View style={{ marginTop: 10 }}>
-                <MainButton onPress={checkOutHandler}>Add To Cart</MainButton>
+                <MainButton onPress={checkOutHandler}>Check out</MainButton>
             </View>
         </View>
     );

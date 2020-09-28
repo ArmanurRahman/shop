@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 
 const QuantityControl = (props) => {
-    const [quantity, setQuantity] = useState();
+    const [quantity, setQuantity] = useState(1);
     const [totalPrice, setTotalPrice] = useState(0);
 
     const cartInfo = useSelector((state) => {
@@ -55,7 +55,7 @@ const QuantityControl = (props) => {
             </View>
             <View styles={styles.total}>
                 <Text style={{ fontSize: 18 }}>
-                    Total ${totalPrice.toFixed(2)}
+                    Total ${parseFloat(totalPrice).toFixed(2)}
                 </Text>
             </View>
         </View>

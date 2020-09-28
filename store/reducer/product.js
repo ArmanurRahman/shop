@@ -3,6 +3,7 @@ import {
     DELETE_PRODUCT,
     CREATE_PRODUCT,
     UPDATE_PRODUCT,
+    SET_PRODUCT,
 } from "../action/product";
 import Product from "../../models/product";
 
@@ -13,6 +14,14 @@ const init = {
 
 const reducer = (state = init, action) => {
     switch (action.type) {
+        case SET_PRODUCT:
+            return {
+                ...state,
+                availableProducts: action.products,
+                userProduct: action.products.filter(
+                    (item) => item.userId === "u1"
+                ),
+            };
         case CREATE_PRODUCT:
             const newProduct = new Product(
                 action.id,

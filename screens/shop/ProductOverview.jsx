@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ProductList from "../../components/ProductList";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
+import * as productActions from "../../store/action/product";
 
 const ProductOverview = (props) => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(productActions.fetchProducts());
+    }, [dispatch]);
+
     const availableProducts = useSelector(
         (state) => state.product.availableProducts
     );
