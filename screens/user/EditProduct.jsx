@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback, useReducer } from "react";
 import {
     View,
+    Text,
     StyleSheet,
     ScrollView,
     Alert,
     KeyboardAvoidingView,
+    ActivityIndicator,
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
@@ -12,6 +14,7 @@ import { useSelector } from "react-redux";
 import * as productActions from "../../store/action/product";
 import { useDispatch } from "react-redux";
 import Input from "../../components/UI/input";
+import { Color } from "../../constants/Color";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 const formReducer = (state, action) => {
@@ -35,7 +38,11 @@ const formReducer = (state, action) => {
     return state;
 };
 const EditProductScreen = (props) => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
+
     const productId = props.navigation.getParam("productId");
+
     const editProduct = useSelector((state) =>
         state.product.userProduct.find((prod) => prod.id === productId)
     );
@@ -57,7 +64,7 @@ const EditProductScreen = (props) => {
 
     const dispatch = useDispatch();
 
-    const submitHandler = useCallback(() => {
+    const submitHandler = useCallback(async () => {
         if (!formState.formIsValid) {
             Alert.alert("Wrong input", "Please check error in the form", [
                 { text: "Ok" },
@@ -65,26 +72,33 @@ const EditProductScreen = (props) => {
             return;
         }
 
-        if (!editProduct) {
-            dispatch(
-                productActions.createProduct(
-                    formState.inputValues.title,
-                    formState.inputValues.imageUrl,
-                    formState.inputValues.price,
-                    formState.inputValues.description
-                )
-            );
-        } else {
-            dispatch(
-                productActions.updateProduct(
-                    editProduct.id,
-                    formState.inputValues.title,
-                    formState.inputValues.imageUrl,
-                    formState.inputValues.description
-                )
-            );
+        setError(null);
+        setIsLoading(true);
+        try {
+            if (!editProduct) {
+                await dispatch(
+                    productActions.createProduct(
+                        formState.inputValues.title,
+                        formState.inputValues.imageUrl,
+                        formState.inputValues.price,
+                        formState.inputValues.description
+                    )
+                );
+            } else {
+                await dispatch(
+                    productActions.updateProduct(
+                        editProduct.id,
+                        formState.inputValues.title,
+                        formState.inputValues.imageUrl,
+                        formState.inputValues.description
+                    )
+                );
+            }
+            props.navigation.goBack();
+        } catch (err) {
+            setError(err.message);
         }
-        props.navigation.goBack();
+        setIsLoading(false);
     }, [dispatch, formState]);
 
     useEffect(() => {
@@ -103,6 +117,20 @@ const EditProductScreen = (props) => {
         [dispatchFormState]
     );
 
+    if (isLoading) {
+        return (
+            <View style={styles.centered}>
+                <ActivityIndicator size='large' color={Color.primary} />
+            </View>
+        );
+    }
+    if (error) {
+        return (
+            <View style={styles.centered}>
+                <Text>{error}</Text>
+            </View>
+        );
+    }
     return (
         <KeyboardAvoidingView
             style={{ flex: 1 }}
@@ -192,6 +220,11 @@ EditProductScreen.navigationOptions = (navData) => {
 const styles = StyleSheet.create({
     form: {
         margin: 20,
+    },
+    centered: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
     },
 });
 

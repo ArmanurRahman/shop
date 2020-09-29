@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import UserProductList from "../../components/UserProductList";
@@ -6,7 +6,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
 
 const UserProductScreen = (props) => {
-    const userProducts = useSelector((state) => state.product.userProduct);
+    let userProducts = useSelector((state) => state.product.userProduct);
 
     return (
         <UserProductList data={userProducts} navigation={props.navigation} />

@@ -6,12 +6,16 @@ import Product from "../../models/product";
 
 export const deleteProduct = (pid) => {
     return async (dispatch) => {
-        await fetch(
+        const response = await fetch(
             `https://simple-shop-9bc6f.firebaseio.com/products/${pid}.json`,
             {
                 method: "DELETE",
             }
         );
+
+        if (!response.ok) {
+            throw new Error("Something went wrong");
+        }
         dispatch({
             type: DELETE_PRODUCT,
             pid,
@@ -70,6 +74,9 @@ export const createProduct = (title, imageUrl, price, description) => {
             }
         );
 
+        if (!response.ok) {
+            throw new Error("Something went wrong");
+        }
         const resData = await response.json();
         console.log(resData);
         dispatch({
@@ -85,7 +92,7 @@ export const createProduct = (title, imageUrl, price, description) => {
 
 export const updateProduct = (productId, title, imageUrl, description) => {
     return async (dispatch) => {
-        await fetch(
+        const response = await fetch(
             `https://simple-shop-9bc6f.firebaseio.com/products/${productId}.json`,
             {
                 method: "PATCH",
@@ -99,6 +106,9 @@ export const updateProduct = (productId, title, imageUrl, description) => {
                 }),
             }
         );
+        if (!response.ok) {
+            throw new Error("Something went wrong!");
+        }
         dispatch({
             type: UPDATE_PRODUCT,
             productId,
