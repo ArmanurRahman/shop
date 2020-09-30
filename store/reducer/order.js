@@ -1,4 +1,4 @@
-import { PLACE_ORDER } from "../action/order";
+import { PLACE_ORDER, SET_ORDERS } from "../action/order";
 
 const init = {
     orders: [],
@@ -12,6 +12,11 @@ const reducer = (state = init, action) => {
             return {
                 ...state,
                 orders: newOrders,
+            };
+
+        case SET_ORDERS:
+            return {
+                orders: action.orders,
             };
         default:
             return state;

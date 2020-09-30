@@ -20,7 +20,7 @@ const CartItems = (props) => {
     return (
         <FlatList
             data={props.data}
-            keyExtractor={(item, index) => item.productId}
+            keyExtractor={(item, index) => item.orderId}
             renderItem={renderItem}
         />
     );
