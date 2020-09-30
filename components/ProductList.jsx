@@ -41,6 +41,8 @@ const ProductList = (props) => {
 
     return (
         <FlatList
+            onRefresh={props.onRefresh}
+            refreshing={props.refreshing}
             data={props.data}
             renderItem={renderItem}
             keyExtractor={(item, index) => item.id}

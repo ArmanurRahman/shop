@@ -12,25 +12,29 @@ const ProductOverview = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
     const dispatch = useDispatch();
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     const loadProduct = useCallback(async () => {
         setError(null);
-        setIsLoading(true);
+        setIsRefreshing(true);
         try {
             await dispatch(productActions.fetchProducts());
         } catch (err) {
             setError(err.message);
         }
 
-        setIsLoading(false);
-    }, [dispatch, setIsLoading, setError]);
+        setIsRefreshing(false);
+    }, [dispatch, setIsRefreshing, setError]);
 
     useEffect(() => {
         props.navigation.addListener("willFocus", loadProduct);
     }, [loadProduct]);
 
     useEffect(() => {
-        loadProduct();
+        setIsLoading(true);
+        loadProduct().then(() => {
+            setIsLoading(false);
+        });
     }, [loadProduct]);
 
     const availableProducts = useSelector(
@@ -62,7 +66,12 @@ const ProductOverview = (props) => {
     }
 
     return (
-        <ProductList data={availableProducts} navigation={props.navigation} />
+        <ProductList
+            onRefresh={loadProduct}
+            refreshing={isRefreshing}
+            data={availableProducts}
+            navigation={props.navigation}
+        />
     );
 };
 
