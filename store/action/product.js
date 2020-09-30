@@ -78,7 +78,7 @@ export const createProduct = (title, imageUrl, price, description) => {
             throw new Error("Something went wrong");
         }
         const resData = await response.json();
-        console.log(resData);
+
         dispatch({
             type: CREATE_PRODUCT,
             id: resData.name,

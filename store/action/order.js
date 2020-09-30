@@ -47,7 +47,6 @@ export const fetchOders = () => {
             const orderData = [];
             for (let key in resData) {
                 resData[key].orderInfo.forEach((val, index) => {
-                    console.log(val);
                     orderData.push(
                         new Orders(
                             key + val.productId + val.orderDate,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { useSelector } from "react-redux";
@@ -13,14 +13,19 @@ const OrderScreen = (props) => {
     const orders = useSelector((state) => state.order.orders);
     const [isLoading, setIsLoading] = useState(false);
 
-    const getOrders = async () => {
+    const getOrders = useCallback(async () => {
         setIsLoading(true);
         await dispatch(OrderActions.fetchOders());
         setIsLoading(false);
-    };
+    }, [dispatch]);
+
+    useEffect(() => {
+        props.navigation.addListener("willFocus", getOrders);
+    }, [getOrders]);
+
     useEffect(() => {
         getOrders();
-    }, []);
+    }, [getOrders]);
 
     if (isLoading) {
         return (
@@ -38,7 +43,7 @@ const OrderScreen = (props) => {
 
 OrderScreen.navigationOptions = (navData) => {
     return {
-        headerTitle: "Products",
+        headerTitle: "Orders",
         headerLeft: () => (
             <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
                 <Item

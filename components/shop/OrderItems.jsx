@@ -3,7 +3,6 @@ import { FlatList } from "react-native";
 import OrderItem from "./OrderItem";
 
 const CartItems = (props) => {
-    console.log(props.data);
     const renderItem = (renderData) => {
         return (
             <OrderItem
