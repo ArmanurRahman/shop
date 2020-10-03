@@ -10,7 +10,7 @@ const NavigationContainer = (props) => {
     useEffect(() => {
         if (!isAuth) {
             navRef.current.dispatch(
-                NavigationActions.navigate({ routeName: "auth" })
+                NavigationActions.navigate({ routeName: "startup" })
             );
         }
     }, [isAuth]);

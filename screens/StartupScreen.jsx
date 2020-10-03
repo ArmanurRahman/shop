@@ -31,13 +31,13 @@ const StartupScreen = (props) => {
             const expirationTime =
                 expirationDate.getTime() - new Date().getTime();
             props.navigation.navigate("shop");
-            dispatch(authActions.authinticate(userId, token, expirationTime));
+            dispatch(authActions.authinticate(token, userId, expirationTime));
         };
         tryLogin();
-    }, []);
+    }, [dispatch]);
     return (
         <View style={styles.centerd}>
-            <ActivityIndicator size='large' color={Color.primary} />
+            <ActivityIndicator size='large' color={Color.secondary} />
         </View>
     );
 };

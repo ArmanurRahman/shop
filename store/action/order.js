@@ -6,6 +6,7 @@ export const placeOrder = (orderInfo) => {
     return async (dispatch, getState) => {
         const userId = getState().auth.userId;
         const token = getState().auth.token;
+
         const response = await fetch(
             `https://simple-shop-9bc6f.firebaseio.com/orders/${userId}.json?auth=${token}`,
             {
