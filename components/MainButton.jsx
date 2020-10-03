@@ -17,7 +17,7 @@ const MainButton = (props) => {
     return (
         <View style={styles.buttonContainer}>
             <ButtonComponent activeOpacity={0.7} onPress={props.onPress}>
-                <View style={styles.button}>
+                <View style={{ ...styles.button, ...props.styles }}>
                     <Text style={styles.buttonText}>{props.children}</Text>
                 </View>
             </ButtonComponent>

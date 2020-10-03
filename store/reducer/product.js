@@ -8,8 +8,8 @@ import {
 import Product from "../../models/product";
 
 const init = {
-    availableProducts: PRODUCTS,
-    userProduct: PRODUCTS.filter((item) => item.userId === "u1"),
+    availableProducts: [],
+    userProduct: [],
 };
 
 const reducer = (state = init, action) => {
@@ -18,14 +18,12 @@ const reducer = (state = init, action) => {
             return {
                 ...state,
                 availableProducts: action.products,
-                userProduct: action.products.filter(
-                    (item) => item.userId === "u1"
-                ),
+                userProduct: action.userProducts,
             };
         case CREATE_PRODUCT:
             const newProduct = new Product(
                 action.id,
-                "u1",
+                action.userId,
                 action.title,
                 action.imageUrl,
                 action.description,

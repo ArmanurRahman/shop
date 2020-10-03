@@ -3,9 +3,11 @@ export const SET_ORDERS = "SET_ORDERS";
 import Orders from "../../models/Order";
 
 export const placeOrder = (orderInfo) => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
+        const userId = getState().auth.userId;
+        const token = getState().auth.token;
         const response = await fetch(
-            "https://simple-shop-9bc6f.firebaseio.com/orders/u1.json",
+            `https://simple-shop-9bc6f.firebaseio.com/orders/${userId}.json?auth=${token}`,
             {
                 method: "POST",
                 headers: {
@@ -18,7 +20,8 @@ export const placeOrder = (orderInfo) => {
         );
 
         if (!response.ok) {
-            throw new Error("Something went wrong");
+            const errorRespose = await response.json();
+            throw new Error(errorRespose.error);
         }
         const resData = await response.json();
 
@@ -33,10 +36,11 @@ export const placeOrder = (orderInfo) => {
 };
 
 export const fetchOders = () => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
+        const userId = getState().auth.userId;
         try {
             const response = await fetch(
-                "https://simple-shop-9bc6f.firebaseio.com/orders/u1.json"
+                `https://simple-shop-9bc6f.firebaseio.com/orders/${userId}.json`
             );
 
             if (!response.ok) {

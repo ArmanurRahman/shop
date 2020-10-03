@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import ProductReducer from "./store/reducer/product";
 import CartReducer from "./store/reducer/cart";
 import OrderReducer from "./store/reducer/order";
+import AuthReducer from "./store/reducer/auth";
 import thunk from "redux-thunk";
 
 export default function App() {
@@ -13,6 +14,7 @@ export default function App() {
         product: ProductReducer,
         cart: CartReducer,
         order: OrderReducer,
+        auth: AuthReducer,
     });
 
     const store = createStore(rootReducer, applyMiddleware(thunk));
