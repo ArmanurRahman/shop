@@ -81,6 +81,7 @@ export const createProduct = (title, imageUrl, price, description) => {
                     imageUrl,
                     price,
                     description,
+                    userId,
                 }),
             }
         );

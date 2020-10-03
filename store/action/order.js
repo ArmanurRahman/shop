@@ -44,7 +44,8 @@ export const fetchOders = () => {
             );
 
             if (!response.ok) {
-                throw new Error("Something went wrong");
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.error);
             }
             const resData = await response.json();
 

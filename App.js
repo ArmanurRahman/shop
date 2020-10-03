@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import ShopNavigation from "./navigation/ShopNavigation";
+import { StyleSheet } from "react-native";
+import NavigationContainer from "./navigation/NavigationContainer";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import ProductReducer from "./store/reducer/product";
@@ -18,9 +18,10 @@ export default function App() {
     });
 
     const store = createStore(rootReducer, applyMiddleware(thunk));
+
     return (
         <Provider store={store}>
-            <ShopNavigation />
+            <NavigationContainer />
         </Provider>
     );
 }

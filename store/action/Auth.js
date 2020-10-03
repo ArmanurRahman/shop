@@ -2,8 +2,12 @@ import { AsyncStorage } from "react-native";
 export const AUTHINTICATE = "AUTHINTICATE";
 export const LOGOUT = "LOGOUT";
 
-export const authinticate = (userId, token) => {
-    return { type: AUTHINTICATE, userId: userId, token: token };
+let timer;
+export const authinticate = (token, userId, expiryTime) => {
+    return (dispatch) => {
+        dispatch(setLogoutTimer(expiryTime));
+        dispatch({ type: AUTHINTICATE, userId: userId, token: token });
+    };
 };
 export const signUp = (email, password) => {
     return async (dispatch) => {
@@ -27,7 +31,13 @@ export const signUp = (email, password) => {
         }
         const resData = await respose.json();
         console.log(resData);
-        dispatch(authinticate(resData.idToken, resData.localId));
+        dispatch(
+            authinticate(
+                resData.idToken,
+                resData.localId,
+                parseInt(resData.expiresIn) * 1000
+            )
+        );
         const expirationDate = new Date(
             new Date().getTime() + parseInt(resData.expiresIn) * 1000
         );
@@ -67,7 +77,13 @@ export const login = (email, password) => {
 
         const resData = await response.json();
 
-        dispatch(authinticate(resData.idToken, resData.localId));
+        dispatch(
+            authinticate(
+                resData.idToken,
+                resData.localId,
+                parseInt(resData.expiresIn) * 1000
+            )
+        );
         const expirationDate = new Date(
             new Date().getTime() + parseInt(resData.expiresIn) * 1000
         );
@@ -87,5 +103,20 @@ const saveDataToStorage = (token, userId, expirationDate) => {
 };
 
 export const logout = () => {
+    clearLogoutTimer();
+    AsyncStorage.removeItem("userData");
     return { type: LOGOUT };
+};
+
+const clearLogoutTimer = () => {
+    if (timer) {
+        clearTimeout(timer);
+    }
+};
+const setLogoutTimer = (expirationTime) => {
+    return (dispatch) => {
+        timer = setTimeout(() => {
+            dispatch(logout());
+        }, expirationTime);
+    };
 };

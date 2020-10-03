@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, Alert } from "react-native";
 import { useSelector } from "react-redux";
 import OrderItems from "../../components/shop/OrderItems";
 import * as OrderActions from "../../store/action/order";
@@ -12,10 +12,17 @@ const OrderScreen = (props) => {
     const dispatch = useDispatch();
     const orders = useSelector((state) => state.order.orders);
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
 
     const getOrders = useCallback(async () => {
         setIsLoading(true);
-        await dispatch(OrderActions.fetchOders());
+        setError();
+        try {
+            await dispatch(OrderActions.fetchOders());
+        } catch (err) {
+            setError(err.message);
+        }
+
         setIsLoading(false);
     }, [dispatch]);
 
@@ -26,6 +33,12 @@ const OrderScreen = (props) => {
     useEffect(() => {
         getOrders();
     }, [getOrders]);
+
+    useEffect(() => {
+        if (error) {
+            Alert.alert("Error", error, [{ Text: "Ok", style: "destructive" }]);
+        }
+    }, [error]);
 
     if (isLoading) {
         return (
