@@ -98,7 +98,7 @@ const Auth = (props) => {
     return (
         <KeyboardAvoidingView
             behavior='padding'
-            keyboardVerticalOffset={50}
+            keyboardVerticalOffset={20}
             style={styles.screen}
         >
             <View style={styles.controls}>
