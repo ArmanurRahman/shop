@@ -27,7 +27,10 @@ const ProductOverview = (props) => {
     }, [dispatch, setIsRefreshing, setError]);
 
     useEffect(() => {
-        props.navigation.addListener("willFocus", loadProduct);
+        const unsubscribe = props.navigation.addListener("focus", loadProduct);
+        return () => {
+            unsubscribe();
+        };
     }, [loadProduct]);
 
     useEffect(() => {
@@ -75,7 +78,7 @@ const ProductOverview = (props) => {
     );
 };
 
-ProductOverview.navigationOptions = (navData) => {
+export const ScreenOptions = (navData) => {
     return {
         headerTitle: "Products",
         headerLeft: () => (

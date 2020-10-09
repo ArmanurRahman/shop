@@ -12,12 +12,9 @@ const ProductList = (props) => {
     };
 
     const selectItemHander = (id, title) => {
-        props.navigation.navigate({
-            routeName: "productDetail",
-            params: {
-                productId: id,
-                productTitle: title,
-            },
+        props.navigation.navigate("productDetail", {
+            productId: id,
+            productTitle: title,
         });
     };
 

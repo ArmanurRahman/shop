@@ -89,7 +89,7 @@ const Auth = (props) => {
         setIsLoading(true);
         try {
             await dispatch(action);
-            props.navigation.navigate("shop");
+            //props.navigation.navigate("shop");
         } catch (err) {
             setError(err.message);
             setIsLoading(false);

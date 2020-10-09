@@ -39,11 +39,8 @@ const UserProductList = (props) => {
     };
 
     const selectItemHander = (id) => {
-        props.navigation.navigate({
-            routeName: "userEdit",
-            params: {
-                productId: id,
-            },
+        props.navigation.navigate("userEdit", {
+            productId: id,
         });
     };
     if (isLoading) {

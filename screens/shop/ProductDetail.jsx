@@ -8,7 +8,7 @@ import QuantityControl from "../../components/QuantityControl/QuantityControl";
 import * as cartActions from "../../store/action/cart";
 
 const ProductDetails = (props) => {
-    const selectProductId = props.navigation.getParam("productId");
+    const selectProductId = props.route.params.productId;
     const [quantity, setQuantity] = useState();
 
     const availableProduct = useSelector(
@@ -98,8 +98,8 @@ const ProductDetails = (props) => {
     );
 };
 
-ProductDetails.navigationOptions = (navData) => {
-    const productTitle = navData.navigation.getParam("productTitle");
+export const ScreenOptions = (navData) => {
+    const productTitle = navData.route.paramsproductTitle;
     return {
         headerTitle: productTitle,
     };

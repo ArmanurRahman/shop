@@ -54,7 +54,7 @@ const CartScreen = (props) => {
         </View>
     );
 };
-CartScreen.navigationOptions = (navData) => {
+export const ScreenOptions = (navData) => {
     return {
         headerTitle: "Shopping Cart",
     };

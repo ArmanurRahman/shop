@@ -41,7 +41,8 @@ const EditProductScreen = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
 
-    const productId = props.navigation.getParam("productId");
+    //const productId = props.navigation.getParam("productId");
+    const productId = props.route.params ? props.route.params.productId : null;
 
     const editProduct = useSelector((state) =>
         state.product.userProduct.find((prod) => prod.id === productId)
@@ -102,7 +103,17 @@ const EditProductScreen = (props) => {
     }, [dispatch, formState]);
 
     useEffect(() => {
-        props.navigation.setParams({ submit: submitHandler });
+        props.navigation.setOptions({
+            headerRight: () => (
+                <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+                    <Item
+                        title='save'
+                        iconName='ios-checkmark'
+                        onPress={submitHandler}
+                    />
+                </HeaderButtons>
+            ),
+        });
     }, [submitHandler]);
 
     const inputChangeHandler = useCallback(
@@ -199,21 +210,13 @@ const EditProductScreen = (props) => {
     );
 };
 
-EditProductScreen.navigationOptions = (navData) => {
-    const submitFunc = navData.navigation.getParam("submit");
+export const ScreenOptions = (navData) => {
+    const submitFunc = navData.route.params
+        ? navData.route.params.submit
+        : null;
+    const routeParam = navData.route.params ? navData.route.params : {};
     return {
-        headerTitle: navData.navigation.getParam("productId")
-            ? "Edit Product"
-            : "Add Product",
-        headerRight: () => (
-            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-                <Item
-                    title='save'
-                    iconName='ios-checkmark'
-                    onPress={submitFunc}
-                />
-            </HeaderButtons>
-        ),
+        headerTitle: routeParam.productId ? "Edit Product" : "Add Product",
     };
 };
 
