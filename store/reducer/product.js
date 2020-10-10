@@ -27,7 +27,8 @@ const reducer = (state = init, action) => {
                 action.title,
                 action.imageUrl,
                 action.description,
-                action.price
+                action.price,
+                action.ownerToken
             );
             return {
                 ...state,
@@ -44,7 +45,8 @@ const reducer = (state = init, action) => {
                 action.title,
                 action.imageUrl,
                 action.description,
-                state.userProduct[productIndex].price
+                state.userProduct[productIndex].price,
+                state.userProduct[productIndex].pushToken
             );
 
             const updateUserProduct = [...state.userProduct];

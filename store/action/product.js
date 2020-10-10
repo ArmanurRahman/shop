@@ -3,6 +3,8 @@ export const CREATE_PRODUCT = "CREATE_PRODUCT";
 export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
 export const SET_PRODUCT = "SET_PRODUCT";
 import Product from "../../models/product";
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
 
 export const deleteProduct = (pid) => {
     return async (dispatch, getState) => {
@@ -47,7 +49,8 @@ export const fetchProducts = () => {
                         resData[key].title,
                         resData[key].imageUrl,
                         resData[key].description,
-                        resData[key].price
+                        resData[key].price,
+                        resData[key].ownerToken
                     )
                 );
             }
@@ -67,6 +70,17 @@ export const fetchProducts = () => {
 
 export const createProduct = (title, imageUrl, price, description) => {
     return async (dispatch, getState) => {
+        let pushToken;
+        let statusObj = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+        if (statusObj.status !== "granted") {
+            statusObj = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        }
+        if (statusObj.status !== "granted") {
+            pushToken = null;
+        } else {
+            pushToken = (await Notifications.getExpoPushTokenAsync()).data;
+        }
+
         const token = getState().auth.token;
         const userId = getState().auth.userId;
         const response = await fetch(
@@ -82,6 +96,7 @@ export const createProduct = (title, imageUrl, price, description) => {
                     price,
                     description,
                     userId,
+                    ownerToken: pushToken,
                 }),
             }
         );
@@ -99,6 +114,7 @@ export const createProduct = (title, imageUrl, price, description) => {
             price,
             description,
             userId,
+            pushToken,
         });
     };
 };

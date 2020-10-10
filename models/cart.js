@@ -6,7 +6,8 @@ class Cart {
         imageUrl,
         quantity,
         totalPrice,
-        price
+        price,
+        pushToken
     ) {
         this.userId = userId;
         this.productId = productId;
@@ -15,6 +16,7 @@ class Cart {
         this.quantity = quantity;
         this.totalPrice = totalPrice;
         this.price = price;
+        this.pushToken = pushToken;
     }
 }
 

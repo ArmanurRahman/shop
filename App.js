@@ -8,7 +8,13 @@ import CartReducer from "./store/reducer/cart";
 import OrderReducer from "./store/reducer/order";
 import AuthReducer from "./store/reducer/auth";
 import thunk from "redux-thunk";
+import * as Notifications from "expo-notifications";
 
+Notifications.setNotificationHandler({
+    handleNotification: async () => {
+        return { shouldShowAlert: true };
+    },
+});
 export default function App() {
     const rootReducer = combineReducers({
         product: ProductReducer,

@@ -23,13 +23,14 @@ const reducer = (state = init, action) => {
             let total = state.totalSum;
             if (index === -1) {
                 const newCart = new Cart(
-                    "u1",
+                    action.product.userId,
                     action.product.id,
                     action.product.title,
                     action.product.imageUrl,
                     action.quantity,
                     action.quantity * action.product.price,
-                    action.product.price
+                    action.product.price,
+                    action.product.pushToken
                 );
                 newCartItems.push(newCart);
                 total += action.quantity * action.product.price;
@@ -42,7 +43,8 @@ const reducer = (state = init, action) => {
                     action.product.imageUrl,
                     cloneCart[index].quantity + 1,
                     cloneCart[index].totalPrice + action.product.price,
-                    action.product.price
+                    action.product.price,
+                    action.product.pushToken
                 );
                 newCartItems = cloneCart;
                 total += action.product.price;
