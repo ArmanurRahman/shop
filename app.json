@@ -21,7 +21,7 @@
             "favicon": "./assets/favicon.png"
         },
         "android": {
-            "useNextNotificationApi": true
+            "useNextNotificationsApi": true
         }
     }
 }
